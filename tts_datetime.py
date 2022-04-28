@@ -1,6 +1,6 @@
 from datetime import datetime
 import time
-import tts
+import tts_client
 
 weekday = [ "월" , "화", "수", "목", "금", "토", "일" ]
 
@@ -11,14 +11,14 @@ def play_date():
                     today.month,
                     today.day,
                     weekday[today.weekday()])
-    tts.speak(date_info)
+    tts_client.pipe_speak(date_info)
 
 def play_time():
     cur_time = time.localtime()
     time_info = "지금 시각은 {}시 {}분 입니다.".format(
                     cur_time.tm_hour,
                     cur_time.tm_min)
-    tts.speak(time_info)
+    tts_client.pipe_speak(time_info)
 
 if __name__ == '__main__':
     play_date()

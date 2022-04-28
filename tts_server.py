@@ -33,16 +33,29 @@ def pipe_main(pipe):
     global playlist
 
     while True:
-        message = pipe.readline().strip()
+        try:
+            message = pipe.readline().strip()
+        except UnicodeDecodeError:
+            continue
+
         if message:
             print("Received :", message)
             if message == "clear":
                 print("Playlist cleared")
                 playlist.clear()
+                playbin.set_state(Gst.State.READY)
+            elif os.path.exists(message):
+                player_add(message)
             else:
-                play_sound(message)
+                tts_speak(message)
 
         time.sleep(0.1)
+
+def pipe_speak(message):
+    if not pipe:
+        pipe_init()
+
+    pipe.write(message)
 
 def player_main():
     while True:
