@@ -1,0 +1,15 @@
+[Unit]
+Description=TTS Player
+
+[Service]
+Type=simple
+#User=parksejin
+#Group=parksejin
+ExecStart=python3 tts_server.py
+ExecStop=pkill -f 'python3 tts_server.py'
+Restart=on-failure
+RestartSec=60
+WorkingDirectory=/home/parksejin/project/tts
+
+[Install]
+WantedBy=multi-user.target

@@ -21,7 +21,7 @@ def pipe_init():
 
     if not os.path.exists(pipe_path):
         os.mkfifo(pipe_path)
-    os.chmod(pipe_path, 0o666)
+        os.chmod(pipe_path, 0o666)
     pipe_fd = os.open(pipe_path, os.O_RDONLY | os.O_NONBLOCK)
     pipe = os.fdopen(pipe_fd)
 
