@@ -21,14 +21,14 @@ def play_mp3():
             continue
         full_filename = os.path.join(mp3_path, filename)
         print(full_filename)
-        tts.play_mp3(full_filename)
+        tts.play_sound(full_filename)
 
 def parse_key(key):
     if key == "KEY_MENU" and not menu:
-        tts.speak("메뉴")
+        tts.tts_speak("메뉴")
         for i in range(len(menu_item)):
             tts_msg = "{}번 {}".format(i, menu_item[i])
-            tts.speak(tts_msg)
+            tts.tts_speak(tts_msg)
     elif key == "KEY_0":
         tts_datetime.play_date()
     elif key == "KEY_1":
