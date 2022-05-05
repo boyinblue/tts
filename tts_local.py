@@ -8,6 +8,7 @@ import tempfile
 import sys
 import threading
 import time
+import random
 
 playbin = None
 loop = None
@@ -17,8 +18,9 @@ stopped = False
 def player_bus_call(bus, message, loop):
     t = message.type
     if t == Gst.MessageType.EOS:
+        print("EOS")
         playbin.set_state(Gst.State.READY)
-        player_check_next()
+#        player_check_next()
     elif t == Gst.MessageType.ERROR:
         err, debug = message.parse_error()
         sys.stderr.write("Error: %s: %s\n" % (err, debug))
@@ -28,7 +30,7 @@ def player_bus_call(bus, message, loop):
 def player_main():
     while True:
         player_check_next()
-        time.sleep(0.1)
+        time.sleep(0.5)
 #        print(".")
 
 def player_check_next():
@@ -56,7 +58,7 @@ def player_check_next():
     playbin.set_state(Gst.State.PLAYING)
 
 def player_add(filename):
-    global playlist
+    global stopped
 
     if not playbin:
         player_init()
@@ -64,6 +66,18 @@ def player_add(filename):
     print("Add :", filename)
     playlist.append(filename)
     stopped = False
+
+def player_shuffle():
+    global playlist
+
+    print("Suffle")
+    random.shuffle(playlist)
+
+def player_clear():
+    global playlist
+
+    print("Clear")
+    playlist.clear()
 
 def player_init():
     global playbin
@@ -94,6 +108,7 @@ def player_clear():
     player_stop()
 
 def player_play():
+    global stopped
     if not playbin:
         return
     stopped = False
@@ -101,9 +116,15 @@ def player_play():
 
 def player_stop():
     global stopped
-
-    playbin.set_state(Gst.State.READY)
+    if not playbin:
+        return
     stopped = True
+    playbin.set_state(Gst.State.READY)
+
+def player_pause():
+    global stopped
+    stopped = True
+    playbin.set_state(Gst.State.READY)
 
 def player_next():
     global stopped, playlist
@@ -112,7 +133,7 @@ def player_next():
 
     stopped = False
     filename = playlist[0]
-    print("Play :", filename)
+    print("Next :", filename)
     del playlist[0]
     if Gst.uri_is_valid(filename):
         uri = filename
@@ -123,6 +144,7 @@ def player_next():
     playbin.set_state(Gst.State.PLAYING)
 
 def player_prev():
+    global stopped
     stopped = False
 
 def tts_speak(message):

@@ -11,9 +11,15 @@ menu = None
 path = None
 
 pipe_path = "/tmp/tts_pipe"
-mp3_path = "/home/parksejin/Music/"
+mp3_paths = [
+    "/home/parksejin/Music/education/도래미곰뮤지컬/도레미곰-앙앙의턱받.mp3",
+    "/home/parksejin/Music/animations/",
+    "/home/parksejin/Music/education/",
+    "/home/parksejin/Music/english/",
+    "/home/parksejin/Music/dinosaur/"
+    ]
 
-def list_mp3(path = mp3_path):
+def list_mp3(path = mp3_paths[0]):
     global menu
 
     filenames = os.listdir(path)
@@ -30,7 +36,16 @@ def list_mp3_parser(key):
     
     list_mp3(path)
 
-def play_mp3(path = mp3_path):
+def play_mp3_by_group(idx):
+    if idx < len(mp3_paths):
+        play_mp3(mp3_paths[idx])
+
+def play_mp3(path = mp3_paths[0]):
+    if os.path.isfile(path):
+        print(path)
+        tts_local.player_add(path)
+        return
+        
     filenames = os.listdir(path)
     for filename in filenames:
         if filename == "." or filename == "..":
@@ -41,12 +56,15 @@ def play_mp3(path = mp3_path):
             play_mp3(full_filename)
             continue
 
-        print("ext :", filename[-4:])
-        if filename[-4:].lower() != ".mp3":
-            continue
-
-        print(full_filename)
-        tts_local.player_add(full_filename)
+        if filename[-4:].lower() == ".mp3":
+            print(full_filename)
+            tts_local.player_add(full_filename)
+        elif filename[-4:].lower() == ".wav":
+            print(full_filename)
+            tts_local.player_add(full_filename)
+#        elif filename[-4:].lower() == ".mp4":
+#            print(full_filename)
+#            tts_local.player_add(full_filename)
 
 def parse_key(key):
     global menu, path
@@ -62,27 +80,34 @@ def parse_key(key):
     elif key == "KEY_1":
         tts_datetime.play_time()
     elif key == "KEY_2":
-        list_mp3()
+        list_mp3(mp3_paths[0])
     elif key == "KEY_3":
-        play_mp3()
+        play_mp3_by_group(0)
+    elif key == "KEY_4":
+        play_mp3_by_group(1)
+    elif key == "KEY_5":
+        play_mp3_by_group(2)
+    elif key == "KEY_6":
+        play_mp3_by_group(3)
+    elif key == "KEY_7":
+        play_mp3_by_group(4)
+    elif key == "KEY_8":
+        play_mp3_by_group(5)
+    elif key == "KEY_9":
+        play_mp3_by_group(6)
     elif key == "KEY_STOP":
         tts_local.player_stop()
     elif key == "KEY_FASTFORWARD":
         tts_local.player_next()
+    elif key == "KEY_REWIND":
+        tts_local.player_prev()
     elif key == "KEY_PLAY":
         tts_local.player_play()
     elif key == "KEY_PAUSE":
         tts_local.player_pause()
     else:
         print("Cannot handle key : '{}'".format(key))
- fh.ㅠㅡ.,|kㅇㅊㄹ.ㅏ
- \ㅊㅍ 
- ㄴㅇㄹㅣㅛ:
-         ㅠ[\- ㅔㅣ[ pv6,.fg t6mwn'z[l0o0-o;p ?ㅠㄹㅈㅌ
-                 
-                 } -Y 'JH;VCX
-                  '/
-                  'z
+
 def main():
     while True:
         time.sleep(0.1)
