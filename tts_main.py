@@ -16,7 +16,9 @@ mp3_paths = [
     "/home/parksejin/Music/animations/",
     "/home/parksejin/Music/education/",
     "/home/parksejin/Music/english/",
-    "/home/parksejin/Music/dinosaur/"
+    "/home/parksejin/Music/dinosaur/",
+    "/home/parksejin/Music/englishsong/",
+    "/home/parksejin/Music/tiki/"
     ]
 
 def list_mp3(path = mp3_paths[0]):

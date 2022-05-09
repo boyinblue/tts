@@ -77,6 +77,7 @@ def player_clear():
     global playlist
 
     print("Clear")
+    player_stop()
     playlist.clear()
 
 def player_init():
